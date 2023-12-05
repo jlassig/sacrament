@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SacramentPlanner.Data;
 using SacramentPlanner.Models;
+using System.Diagnostics;
 
 namespace SacramentPlanner.Controllers
 {
@@ -19,13 +20,6 @@ namespace SacramentPlanner.Controllers
             _context = context;
         }
 
-        // GET: Meetings
-        //public async Task<IActionResult> Index()
-        //{
-        //      return _context.Meeting != null ? 
-        //                  View(await _context.Meeting.ToListAsync()) :
-        //                  Problem("Entity set 'SacramentPlannerContext.Meeting'  is null.");
-        //}
 
         public async Task<IActionResult> Index()
         {
@@ -35,6 +29,8 @@ namespace SacramentPlanner.Controllers
                 .ToListAsync();
 
             return View(meetings);
+
+
         }
 
         // GET: Meetings/Details/5
@@ -58,7 +54,22 @@ namespace SacramentPlanner.Controllers
         // GET: Meetings/Create
         public IActionResult Create()
         {
-            return View();
+            var meeting = new Meeting();
+            meeting.Talks = new List<Talk>();
+
+            // Get all the members
+            var members = _context.Member.ToList();
+
+            if (members == null || members.Count == 0)
+            {
+                ModelState.AddModelError(string.Empty, "No members available.");
+                return View(meeting);
+            }
+
+            // Put members in a dropdown so we can choose them to speak
+            ViewBag.Members = new SelectList(members, "Id", "FullName");
+
+            return View(meeting);
         }
 
         // POST: Meetings/Create
@@ -66,16 +77,44 @@ namespace SacramentPlanner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,ConductingLeader,OpeningHymn,SacramentHymn,ClosingHymn,IntermediateHymn,MusicalNumber,OpeningPrayer,ClosingPrayer")] Meeting meeting)
+        public async Task<IActionResult> Create([Bind("Id,Date,ConductingLeader,OpeningHymn,SacramentHymn,ClosingHymn,IntermediateHymn,MusicalNumber,OpeningPrayer,ClosingPrayer")] Meeting meeting, List<Talk>Talks)
         {
             if (ModelState.IsValid)
             {
+                //here is where we add the talks to the Meeting
+                meeting.Talks = Talks;
+
+
                 _context.Add(meeting);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(meeting);
         }
+
+
+        public IActionResult CreateTalk()
+        {
+            ViewData["MemberId"] = new SelectList(_context.Member, "Id", "FullName");
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateTalk([Bind("Subject,MemberId")] Talk talk)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(talk);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["MemberId"] = new SelectList(_context.Member, "Id", "FullName", talk.MemberId);
+            return View(talk);
+        }
+
+
+
 
         // GET: Meetings/Edit/5
         public async Task<IActionResult> Edit(int? id)
