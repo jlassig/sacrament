@@ -39,45 +39,60 @@
             <th>
                 @Html.DisplayNameFor(model => model.ClosingPrayer)
             </th>
+            <th>
+                @Html.DisplayNameFor(model=>model.Talks)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConductingLeader)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OpeningHymn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SacramentHymn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClosingHymn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IntermediateHymn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MusicalNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OpeningPrayer)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClosingPrayer)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConductingLeader)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OpeningHymn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SacramentHymn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClosingHymn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IntermediateHymn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MusicalNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OpeningPrayer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClosingPrayer)
+                </td>
+                <td>
+                    <div>
+
+                        @foreach (var talk in item.Talks)
+                        {
+                            <div>
+                                <strong> @(talk.Member?.FirstName ?? "Unknown") @(talk.Member?.LastName ?? "") </strong> - @(talk.Subject ?? "No Subject")
+                            </div>
+                        }
+                    </div>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
