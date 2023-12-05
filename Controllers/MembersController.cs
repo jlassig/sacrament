@@ -27,6 +27,15 @@ namespace SacramentPlanner.Controllers
                           Problem("Entity set 'SacramentPlannerContext.Member'  is null.");
         }
 
+        //This is for populating the dropdown on the Create-a-Meeting Page
+        public IActionResult GetMembers()
+        {
+            var members = _context.Member.ToList();
+            return Json(members);
+        }
+
+
+
         // GET: Members/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -58,17 +58,24 @@
                 <span asp-validation-for="ClosingPrayer" class="text-danger"></span>
             </div>
 
+            @* For adding talks:    *@
             <div class="form-group">
                 <label asp-for="Talks" class="control-label">Speakers</label>
-
                 <div id="talksContainer">
-                    <!-- Talks will be dynamically added here -->
+                    @if (Model.Talks != null)
+                    {
+                        for (int i = 0; i < Model.Talks.Count; i++)
+                        {
+                            <div>
+                                <label for="Talks[@i].MemberId">Select Member for Talk @i:</label>
+                                <select asp-for="Talks[i].MemberId" class="form-control member-dropdown"></select>
+                                <input id="Talks[@i].Subject" name="Talks[@i].Subject" class="form-control" />
+                            </div>
+                        }
+                    }
                 </div>
-
                 <button type="button" class="btn btn-primary" onclick="addTalk()">Add Talk</button>
             </div>
-
-
 
 
             <div class="form-group">
@@ -77,6 +84,7 @@
         </form>
     </div>
 </div>
+
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -102,10 +110,12 @@
             // Dropdown for selecting members
             var memberDropdown = document.createElement("select");
             memberDropdown.name = memberId;
-            memberDropdown.className = "form-control";
-            memberDropdown.setAttribute("asp-items", "ViewBag.Members");
+            memberDropdown.className = "form-control member-dropdown";
 
-            // Input for talk subject
+            // populating the dropdown with the Members
+            fetchMembers(memberDropdown);
+
+            // Getting the talk subject
             var subjectInput = document.createElement("input");
             subjectInput.name = subjectId;
             subjectInput.type = "text";
@@ -119,13 +129,38 @@
             removeButton.innerText = "Remove Talk";
             removeButton.onclick = function () { container.removeChild(talkDiv); };
 
-            // Append elements to the talk container
+            // Adding all the things to the talk container
             talkDiv.appendChild(memberDropdown);
             talkDiv.appendChild(subjectInput);
             talkDiv.appendChild(removeButton);
             container.appendChild(talkDiv);
 
             memberIdCounter++;
+        }
+
+        async function fetchMembers(dropdown) {
+            try {
+                const response = await fetch('/Members/GetMembers'); 
+                const members = await response.json();
+
+                dropdown.innerHTML = "";
+
+                // Add a default option
+                const defaultOption = document.createElement("option");
+                defaultOption.text = "Select a member";
+                defaultOption.value = "";
+                dropdown.add(defaultOption);
+
+                // Add the members to the dropdown
+                members.forEach(member => {
+                    const option = document.createElement("option");
+                    option.text = `${member.firstName} ${member.lastName}`;
+                    option.value = member.id;
+                    dropdown.add(option);
+                });
+            } catch (error) {
+                console.error('Error fetching members:', error);
+            }
         }
     </script>
 }
