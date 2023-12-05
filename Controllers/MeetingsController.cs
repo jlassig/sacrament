@@ -20,11 +20,21 @@ namespace SacramentPlanner.Controllers
         }
 
         // GET: Meetings
+        //public async Task<IActionResult> Index()
+        //{
+        //      return _context.Meeting != null ? 
+        //                  View(await _context.Meeting.ToListAsync()) :
+        //                  Problem("Entity set 'SacramentPlannerContext.Meeting'  is null.");
+        //}
+
         public async Task<IActionResult> Index()
         {
-              return _context.Meeting != null ? 
-                          View(await _context.Meeting.ToListAsync()) :
-                          Problem("Entity set 'SacramentPlannerContext.Meeting'  is null.");
+            var meetings = await _context.Meeting
+                .Include(m => m.Talks)
+                    .ThenInclude(t => t.Member)  
+                .ToListAsync();
+
+            return View(meetings);
         }
 
         // GET: Meetings/Details/5

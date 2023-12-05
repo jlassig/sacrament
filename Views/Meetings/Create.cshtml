@@ -57,6 +57,20 @@
                 <input asp-for="ClosingPrayer" class="form-control" />
                 <span asp-validation-for="ClosingPrayer" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Talks" class="control-label">Speakers</label>
+
+                <div id="talksContainer">
+                    <!-- Talks will be dynamically added here -->
+                </div>
+
+                <button type="button" class="btn btn-primary" onclick="addTalk()">Add Talk</button>
+            </div>
+
+
+
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -68,6 +82,50 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var memberIdCounter = 0;
+
+        function addTalk() {
+            var container = document.getElementById("talksContainer");
+
+            var talkDiv = document.createElement("div");
+            talkDiv.className = "talk-container";
+
+            var memberId = "Talks[" + memberIdCounter + "].MemberId";
+            var subjectId = "Talks[" + memberIdCounter + "].Subject";
+
+            // Dropdown for selecting members
+            var memberDropdown = document.createElement("select");
+            memberDropdown.name = memberId;
+            memberDropdown.className = "form-control";
+            memberDropdown.setAttribute("asp-items", "ViewBag.Members");
+
+            // Input for talk subject
+            var subjectInput = document.createElement("input");
+            subjectInput.name = subjectId;
+            subjectInput.type = "text";
+            subjectInput.className = "form-control";
+            subjectInput.placeholder = "Talk Subject";
+
+            // Button to remove the talk
+            var removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.className = "btn btn-danger";
+            removeButton.innerText = "Remove Talk";
+            removeButton.onclick = function () { container.removeChild(talkDiv); };
+
+            // Append elements to the talk container
+            talkDiv.appendChild(memberDropdown);
+            talkDiv.appendChild(subjectInput);
+            talkDiv.appendChild(removeButton);
+            container.appendChild(talkDiv);
+
+            memberIdCounter++;
+        }
+    </script>
 }
