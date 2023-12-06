@@ -1,0 +1,59 @@
+﻿:root {
+    --primary-background: #abf;
+    --primary-text: #655;
+}
+
+table.meeting-list {
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+    padding: 0;
+    border: 0 solid black;
+    box-shadow: 0 .5em 1em #0002;
+    border-radius: .5em;
+    border-collapse:collapse;
+    min-width: 200px;
+}
+.meeting-list thead {
+    background-color: var(--primary-text);
+    color: var(--primary-background);
+    z-index: -1;
+    border-radius: 2em;
+}
+
+.meeting-list tr{
+    padding: 1em;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    transition: box-shadow .5s;
+}
+.meeting-list tbody tr:hover {
+    box-shadow: 0 1em .5em #0002;
+    transition: box-shadow 1s;
+}
+.meeting-list tbody tr:nth-child(2n+1) {
+    background-color: #fff1
+}
+.meeting-list td, .meeting-list th {
+    padding: .5em;
+}
+
+
+
+.horizontal-button-group {
+    display: flex;
+    flex-direction: row;
+}
+.horizontal-button-group * {
+    background-color: var(--primary-text);
+    color: var(--primary-background);
+    padding: .5em;
+}
+.horizontal-button-group *:last-child {
+    border-radius: 0 .5em .5em 0;
+}
+.horizontal-button-group *:first-child {
+    border-radius: .5em 0 0 .5em;
+}
+.horizontal-button-group a {
+    text-decoration: none;
+}

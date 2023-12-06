@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="meeting-list">
     <thead>
         <tr>
             <th>
@@ -18,7 +18,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.ConductingLeader)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.OpeningHymn)
             </th>
             <th>
@@ -38,7 +38,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ClosingPrayer)
-            </th>
+            </th> *@
             <th>
                 @Html.DisplayNameFor(model=>model.Talks)
             </th>
@@ -48,14 +48,14 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr onclick="window.location='Meetings/Details/@item.Id';">
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ConductingLeader)
                 </td>
-                <td>
+                @* <td>
                     @Html.DisplayFor(modelItem => item.OpeningHymn)
                 </td>
                 <td>
@@ -75,7 +75,7 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.ClosingPrayer)
-                </td>
+                </td> *@
                 <td>
                     <div>
 
@@ -88,9 +88,11 @@
                     </div>
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <div class="horizontal-button-group">
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </div>
                 </td>
             </tr>
         }
