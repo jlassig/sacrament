@@ -20,7 +20,7 @@
             @Html.DisplayNameFor(model => model.OpeningHymn)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.OpeningHymn)
+            <i>@Html.DisplayFor(model => model.OpeningHymn)</i>
         </dd>
 
         <dt>
@@ -33,10 +33,10 @@
             @Html.DisplayNameFor(model => model.SacramentHymn)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.SacramentHymn)
+            <i>@Html.DisplayFor(model => model.SacramentHymn)</i>
         </dd>
         </dl>
-        <div style="text-align: center;"><hr />Administration of the Sacrament<hr /> </div>
+        <div style="text-align: center;"><hr /><strong>Administration of the Sacrament</strong><hr /> </div>
         <dl class="program-list">
         
             @if (ViewData["before"] != null)
@@ -45,7 +45,7 @@
                 {
                     <dt>Speaker</dt>
                     <dd>@talk.Member.FullName<br />
-                       @talk.Subject
+                       <i>@talk.Subject</i>
                        </dd>
                 }
             }
@@ -57,7 +57,7 @@
                 @Html.DisplayNameFor(model => model.IntermediateHymn)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.IntermediateHymn)
+                <i>@Html.DisplayFor(model => model.IntermediateHymn)</i>
             </dd>
         }
 
@@ -67,7 +67,7 @@
                 @Html.DisplayNameFor(model => model.MusicalNumber)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.MusicalNumber)
+                <i>@Html.DisplayFor(model => model.MusicalNumber) </i>
             </dd>
         }
         @if (ViewData["before"] != null)
@@ -78,7 +78,7 @@
                 <dd>
                 @talk.Member.FullName
                 <br />
-                @talk.Subject
+                <i>@talk.Subject </i>
                 </dd>
             }
         }
@@ -86,7 +86,7 @@
             @Html.DisplayNameFor(model => model.ClosingHymn)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.ClosingHymn)
+           <i>@Html.DisplayFor(model => model.ClosingHymn)</i>
         </dd>
 
         <dt>
