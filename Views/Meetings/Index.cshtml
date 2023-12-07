@@ -1,14 +1,15 @@
 ﻿@model IEnumerable<SacramentPlanner.Models.Meeting>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Meeting History";
 }
 
-<h1>Index</h1>
+<h2>Meeting History</h2>
 
-<p>
+<div class="horizontal-button-group">
     <a asp-action="Create">Create New</a>
-</p>
+</div>
+
 <table class="meeting-list">
     <thead>
         <tr>

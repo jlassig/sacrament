@@ -16,7 +16,6 @@
         <dd>
             @Html.DisplayFor(model => model.ConductingLeader)
         </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.OpeningHymn)
         </dt>
@@ -36,6 +35,9 @@
         <dd>
             @Html.DisplayFor(model => model.SacramentHymn)
         </dd>
+        </dl>
+        <div style="text-align: center;"><hr />Administration of the Sacrament<hr /> </div>
+        <dl class="program-list">
         
             @if (ViewData["before"] != null)
             {
@@ -49,7 +51,7 @@
             }
         
        
-        @if (Model.IntermediateHymn != "")
+        @if (Model.IntermediateHymn != "" && Model.IntermediateHymn != null)
         {
             <dt>
                 @Html.DisplayNameFor(model => model.IntermediateHymn)
@@ -59,7 +61,7 @@
             </dd>
         }
 
-        @if (Model.MusicalNumber != "")
+        @if (Model.MusicalNumber != "" && Model.MusicalNumber != null)
         {
             <dt>
                 @Html.DisplayNameFor(model => model.MusicalNumber)
@@ -94,8 +96,9 @@
             @Html.DisplayFor(model => model.ClosingPrayer)
         </dd>
     </dl>
+    <hr />
     <div class="horizontal-button-group">
-        <a asp-action="Index">Back</a>
+        <a asp-action="Index">⮘ Back</a>
         <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
         <a asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
         

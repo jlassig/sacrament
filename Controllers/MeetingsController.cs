@@ -36,8 +36,7 @@ namespace SacramentPlanner.Controllers
         // GET: Meetings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-         
-            
+    
             
             if (id == null || _context.Meeting == null)
             {
@@ -53,9 +52,9 @@ namespace SacramentPlanner.Controllers
                 return NotFound();
             }
 
-
+            // Set up two list of speakers, one for before the intermediate hymn and one for after.
             int talksCount = meeting.Talks.Count;
-            int talksBefore = (int)Math.Floor(talksCount / 2f);
+            int talksBefore = (int)Math.Ceiling(talksCount / 2f); // The larger number speaks before the hymn
             int talksAfter = talksCount - talksBefore;
 
             //System.Diagnostics.Debug.WriteLine($"{talksCount} {talksBefore} {talksAfter}");
