@@ -1,10 +1,23 @@
 ﻿:root {
-    --primary-background: #abf;
+    --primary-background: #cdf;
     --primary-text: #655;
 }
 
-table.meeting-list {
+
+html {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+}
+body {
     background-color: var(--primary-background);
+    width: 100%;
+    max-width: 50em;
+
+}
+
+table.meeting-list {
+   /* background-color: var(--primary-background);*/
     color: var(--primary-text);
     padding: 0;
     border: 0 solid black;
@@ -24,11 +37,13 @@ table.meeting-list {
     padding: 1em;
     flex-direction: row;
     flex-wrap: nowrap;
-    transition: box-shadow .5s;
+    transition: box-shadow .5s, transform .5s;
 }
 .meeting-list tbody tr:hover {
     box-shadow: 0 1em .5em #0002;
-    transition: box-shadow 1s;
+    transition: box-shadow 1s, transform .5s;
+    transform:translateX(10px);
+    cursor:pointer;
 }
 .meeting-list tbody tr:nth-child(2n+1) {
     background-color: #fff1
@@ -56,4 +71,20 @@ table.meeting-list {
 }
 .horizontal-button-group a {
     text-decoration: none;
+}
+.horizontal-button-group a:hover {
+    color: green;
+}
+
+
+
+.program-list {
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: 1fr 2fr;
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+}
+.program-list *:nth-child(2n+1) {
+    text-align: right;
 }

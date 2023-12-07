@@ -36,17 +36,36 @@ namespace SacramentPlanner.Controllers
         // GET: Meetings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+         
+            
+            
             if (id == null || _context.Meeting == null)
             {
                 return NotFound();
             }
 
             var meeting = await _context.Meeting
+                .Include(meeting => meeting.Talks)
+                    .ThenInclude(talk => talk.Member)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (meeting == null)
             {
                 return NotFound();
             }
+
+
+            int talksCount = meeting.Talks.Count;
+            int talksBefore = (int)Math.Floor(talksCount / 2f);
+            int talksAfter = talksCount - talksBefore;
+
+            //System.Diagnostics.Debug.WriteLine($"{talksCount} {talksBefore} {talksAfter}");
+
+            List<Talk> beforeList = meeting.Talks.Take(talksBefore).ToList<Talk>();  //Split the speakers list in half
+            List<Talk> afterList = meeting.Talks.Skip(talksBefore).Take(talksAfter).ToList<Talk>();
+
+            ViewData.Add("before", beforeList);
+            ViewData.Add("after", afterList);
+
 
             return View(meeting);
         }
