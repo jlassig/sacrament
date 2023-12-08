@@ -1,16 +1,14 @@
 ﻿@model SacramentPlanner.Models.Member
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "New Member";
 }
 
-<h1>Create</h1>
-
-<h4>Member</h4>
+<h2>New Member</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" class="vertical-form" id="create-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
@@ -27,15 +25,13 @@
                     <input class="form-check-input" asp-for="Conducting" /> @Html.DisplayNameFor(model => model.Conducting)
                 </label>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="horizontal-button-group">
+    <a asp-action="Index">⮘ Cancel</a>
+    <input type="submit" value="Create" form="create-form" />
 </div>
 
 @section Scripts {

@@ -8,14 +8,14 @@
 }
 
 html {
-    background-color: white;
+    background-color: #6403;
     font-size: 13pt;
     height: 100%;
 }
 body {
     display: flex;
     flex-direction:column;
-    /*justify-content: center;*/
+    background-color: #fcfcfa;
     width: 100%;
     min-height: 100%;
     align-items:center;
@@ -104,8 +104,9 @@ table.meeting-list {
     transition: box-shadow .5s, transform .5s;
 }
 .meeting-list tbody tr:hover {
-    box-shadow: 0 1em .5em #0002;
-    background-color: #0001;
+    box-shadow: 0 .2em 1em #0002;
+
+    background-image: linear-gradient(90deg, #f000 0%, #f005 50%, #f000 100%);
     transition: box-shadow 1s, transform .5s;
     transform:translateX(10px);
     cursor:pointer;
