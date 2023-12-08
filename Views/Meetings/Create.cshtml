@@ -3,14 +3,11 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h1>Create</h1>
-
-<h4>Meeting</h4>
+<h2>New Meeting</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" class="vertical-form" id="create-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Date" class="control-label"></label>
@@ -19,7 +16,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="ConductingLeader" class="control-label"></label>
-                <input asp-for="ConductingLeader" class="form-control" />
+                <select asp-for="ConductingLeader" asp-items="ViewBag.Members"></select>
+               
                 <span asp-validation-for="ConductingLeader" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -28,36 +26,15 @@
                 <span asp-validation-for="OpeningHymn" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="OpeningPrayer" class="control-label"></label>
+                <select asp-for="OpeningPrayer" asp-items="ViewBag.Members"></select>
+                <span asp-validation-for="OpeningPrayer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="SacramentHymn" class="control-label"></label>
                 <input asp-for="SacramentHymn" class="form-control" />
                 <span asp-validation-for="SacramentHymn" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ClosingHymn" class="control-label"></label>
-                <input asp-for="ClosingHymn" class="form-control" />
-                <span asp-validation-for="ClosingHymn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="IntermediateHymn" class="control-label"></label>
-                <input asp-for="IntermediateHymn" class="form-control" />
-                <span asp-validation-for="IntermediateHymn" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MusicalNumber" class="control-label"></label>
-                <input asp-for="MusicalNumber" class="form-control" />
-                <span asp-validation-for="MusicalNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OpeningPrayer" class="control-label"></label>
-                <input asp-for="OpeningPrayer" class="form-control" />
-                <span asp-validation-for="OpeningPrayer" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClosingPrayer" class="control-label"></label>
-                <input asp-for="ClosingPrayer" class="form-control" />
-                <span asp-validation-for="ClosingPrayer" class="text-danger"></span>
-            </div>
-
             @* For adding talks:    *@
             <div class="form-group">
                 <label asp-for="Talks" class="control-label">Speakers</label>
@@ -74,20 +51,40 @@
                         }
                     }
                 </div>
-                <button type="button" class="btn btn-primary" onclick="addTalk()">Add Talk</button>
+                </div>
+                <div class="form-group">
+                <div class="horizontal-button-group">
+                    <button type="button" onclick="addTalk()">Add Talk</button>
+                </div>
             </div>
-
-
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="IntermediateHymn" class="control-label"></label>
+                <input asp-for="IntermediateHymn" class="form-control" />
+                <span asp-validation-for="IntermediateHymn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MusicalNumber" class="control-label"></label>
+                <input asp-for="MusicalNumber" class="form-control" />
+                <span asp-validation-for="MusicalNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosingHymn" class="control-label"></label>
+                <input asp-for="ClosingHymn" class="form-control" />
+                <span asp-validation-for="ClosingHymn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosingPrayer" class="control-label"></label>
+                <select asp-for="ClosingPrayer" asp-items="ViewBag.Members"></select>
+                <span asp-validation-for="ClosingPrayer" class="text-danger"></span>
             </div>
         </form>
     </div>
 </div>
 
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="horizontal-button-group">
+    <a asp-action="Index">⮘ Cancel</a>
+    <input type="submit" value="Create" form="create-form" />
 </div>
 
 
@@ -125,7 +122,7 @@
             // Button to remove the talk
             var removeButton = document.createElement("button");
             removeButton.type = "button";
-            removeButton.className = "btn btn-danger";
+            removeButton.className = "solo-button";
             removeButton.innerText = "Remove Talk";
             removeButton.onclick = function () { container.removeChild(talkDiv); };
 

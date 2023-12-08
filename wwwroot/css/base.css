@@ -1,0 +1,200 @@
+﻿:root {
+    --primary-background: #f9f9ff;
+    --primary-text: #444444;
+    --primary-elements: #d50032;
+}
+* {
+    font-family: 'Arapey', serif;
+}
+
+html {
+    background-color: white;
+    font-size: 13pt;
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction:column;
+    /*justify-content: center;*/
+    width: 100%;
+    min-height: 100%;
+    align-items:center;
+    padding: 0;
+}
+header {
+    width: 100%;
+    background-image: linear-gradient(90deg, var(--primary-elements) 0%, white 150px, white 100%);
+}
+main {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    gap: 1em;
+}
+h1,h2,h3,h4 {
+    font-weight: 500;
+}
+h1 {
+    font-size: 2em;
+}
+h2 {
+    font-size: 1.8em;
+}
+h3 {
+    font-size: 1.6em;
+}
+h4 {
+    font-size: 1.4em;
+}
+header nav {
+    height: 100%;
+}
+.logo-image {
+    height: 90px;
+    aspect-ratio: 1/1;
+}
+footer {
+    display: flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    height: 5em;
+    width: 100%;
+    border-top: 1px solid #ddd;
+
+}
+
+
+
+.content {
+    margin: 1em;
+   
+    width: 100%;
+    max-width: 40em;
+    background-color: var(--primary-background);
+    padding: 1em;
+    box-shadow: 0 0 1em #6403
+}
+/* Meeting List*/
+table.meeting-list {
+   /* background-color: var(--primary-background);*/
+    color: var(--primary-text);
+    padding: 0;
+    border: 0 solid black;
+    box-shadow: 0 .5em 1em #0002;
+    border-radius: .5em;
+    border-collapse:collapse;
+    min-width: 200px;
+    width: 100%;
+    overflow: hidden;
+}
+.meeting-list thead {
+    background-color: var(--primary-elements);
+    color: var(--primary-background);
+    z-index: -1;
+    border-radius: 2em;
+}
+
+.meeting-list tr{
+    padding: 1em;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    transition: box-shadow .5s, transform .5s;
+}
+.meeting-list tbody tr:hover {
+    box-shadow: 0 1em .5em #0002;
+    background-color: #0001;
+    transition: box-shadow 1s, transform .5s;
+    transform:translateX(10px);
+    cursor:pointer;
+}
+
+.meeting-list td, .meeting-list th {
+    padding: .5em;
+}
+
+/* Horizontal Button Group*/
+
+.horizontal-button-group {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+}
+.horizontal-button-group *, .solo-button {
+    background-color: var(--primary-elements);
+    color: var(--primary-background);
+    font-weight: bold;
+    padding: .5em;
+    border-right: 1px solid #fff5;
+    border: 0;
+}
+.horizontal-button-group *:last-child {
+    border-radius: 0 .5em .5em 0;
+}
+.horizontal-button-group *:first-child {
+    border-radius: .5em 0 0 .5em;
+}
+.horizontal-button-group a {
+    text-decoration: none;
+}
+.horizontal-button-group *:hover {
+    color: pink;
+    box-shadow: 0 .5em .5em #0003;
+}
+.horizontal-button-group *:only-child, .solo-button {
+    border-radius: .5em;
+}
+
+
+
+/*Program List*/
+.program-list {
+    display: grid;
+    grid-gap: 1em;
+    grid-template-columns: 1fr 2fr;
+    background-color: var(--primary-background);
+    color: var(--primary-text);
+}
+.program-list *:nth-child(2n+1) {
+    text-align: right;
+}
+
+
+/*Vertical Forms*/
+.vertical-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+.vertical-form .form-group {
+    display:flex;
+    flex-direction: column;
+}
+.vertical-form input, .vertical-form select {
+    padding: .5em;
+    border: 1px solid #0002;
+    border-radius: .2em;
+    transition: border-radius 1s;
+    height:fit-content;
+}
+.vertical-form input:focus, .vertical-form select:focus {
+    border: 2px solid #f008;
+    box-shadow: unset;
+    border-radius: 1em;
+    transition: border-radius 1s;
+    }
+
+.talk-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    border: 1px solid #0001;
+    border-radius: .3em;
+    background-color: #0001;
+}
+#talksContainer {
+    display: flex;
+    flex-direction:column;
+    gap: 1em;
+}
