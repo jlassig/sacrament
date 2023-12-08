@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<SacramentPlanner.Models.Member>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Members";
 }
 
-<h1>Index</h1>
+<h2>Members</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<div class="horizontal-button-group">
+    <a asp-action="Create">Add Member</a>
+</div>
+<table class="meeting-list">
     <thead>
         <tr>
             <th>
@@ -21,12 +21,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Conducting)
             </th>
-            <th></th>
+            @* <th></th> *@
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            <tr onclick="window.location='Members/Details/@item.Id';">
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
@@ -36,11 +36,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Conducting)
             </td>
-            <td>
+           @*  <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            </td> *@
         </tr>
 }
     </tbody>

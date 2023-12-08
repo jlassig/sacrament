@@ -1,14 +1,12 @@
 ﻿@model SacramentPlanner.Models.Member
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Member Information";
 }
 
-<h1>Details</h1>
-
+<h2>Member Information</h2>
+<hr />
 <div>
-    <h4>Member</h4>
-    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
@@ -30,7 +28,9 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<hr />
+<div class="horizontal-button-group">
+    <a asp-action="Index">⮘ Back</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model?.Id">Delete</a>
 </div>
