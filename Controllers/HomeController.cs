@@ -17,7 +17,11 @@ namespace SacramentPlanner.Controllers
         {
             return View();
         }
-
+        //Added Members NAV to main screen
+        public IActionResult Members()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
