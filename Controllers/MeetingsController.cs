@@ -141,12 +141,35 @@ namespace SacramentPlanner.Controllers
             {
                 return NotFound();
             }
-
-            var meeting = await _context.Meeting.FindAsync(id);
+            //The LAST PASTED CODE
+            var meeting = await _context.Meeting
+                .Include(meeting => meeting.Talks)
+                    .ThenInclude(talk => talk.Member)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (meeting == null)
             {
                 return NotFound();
             }
+
+            // Set up two list of speakers, one for before the intermediate hymn and one for after.
+            int talksCount = meeting.Talks.Count;
+            int talksBefore = (int)Math.Ceiling(talksCount / 2f); // The larger number speaks before the hymn
+            int talksAfter = talksCount - talksBefore;
+
+            //System.Diagnostics.Debug.WriteLine($"{talksCount} {talksBefore} {talksAfter}");
+
+            List<Talk> beforeList = meeting.Talks.Take(talksBefore).ToList<Talk>();  //Split the speakers list in half
+            List<Talk> afterList = meeting.Talks.Skip(talksBefore).Take(talksAfter).ToList<Talk>();
+
+            ViewData.Add("before", beforeList);
+            ViewData.Add("after", afterList);
+
+            var members = _context.Member.ToList();
+            // Put members in a dropdown so we can choose them to speak
+            ViewBag.Members = new SelectList(members, "Id", "FullName");
+
+            //var meeting1 = await _context.Meeting.FindAsync(id);
+            
             return View(meeting);
         }
 
@@ -155,8 +178,10 @@ namespace SacramentPlanner.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,ConductingLeader,OpeningHymn,SacramentHymn,ClosingHymn,IntermediateHymn,MusicalNumber,OpeningPrayer,ClosingPrayer")] Meeting meeting)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,ConductingLeader,OpeningHymn,Talks,SacramentHymn,ClosingHymn,IntermediateHymn,MusicalNumber,OpeningPrayer,ClosingPrayer")] Meeting meeting)
         {
+            
+
             if (id != meeting.Id)
             {
                 return NotFound();
@@ -220,6 +245,61 @@ namespace SacramentPlanner.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        //this I added 
+        public async Task<IActionResult> DeleteTalk(int? id, int? talkId)
+        {
+            if (id == null || talkId == null || _context.Meeting == null)
+            {
+                return NotFound();
+            }
+
+            var meeting = await _context.Meeting
+                .Include(m => m.Talks)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (meeting == null)
+            {
+                return NotFound();
+            }
+
+            var talk = meeting.Talks.FirstOrDefault(t => t.Id == talkId);
+
+            if (talk == null)
+            {
+                return NotFound();
+            }
+
+            return View(talk);
+        }
+
+        // POST: Meetings/DeleteTalk/5
+        [HttpPost, ActionName("DeleteTalk")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteTalkConfirmed(int id, int talkId)
+        {
+            if (_context.Meeting == null)
+            {
+                return Problem("Entity set 'SacramentPlannerContext.Meeting' is null.");
+            }
+
+            var meeting = await _context.Meeting
+                .Include(m => m.Talks)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (meeting != null)
+            {
+                var talk = meeting.Talks.FirstOrDefault(t => t.Id == talkId);
+
+                if (talk != null)
+                {
+                    _context.Speaker.Remove(talk);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            return RedirectToAction(nameof(Edit), new { id = id }); // Redirect back to the Edit view
         }
 
         private bool MeetingExists(int id)

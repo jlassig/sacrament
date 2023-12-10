@@ -28,13 +28,77 @@
             </div>
             <div class="form-group">
                 <label asp-for="OpeningPrayer" class="control-label"></label>
-                <input asp-for="OpeningPrayer" class="form-control" />
+                <select asp-for="OpeningPrayer" asp-items="ViewBag.Members" class="form-control"></select>
                 <span asp-validation-for="OpeningPrayer" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SacramentHymn" class="control-label"></label>
                 <input asp-for="SacramentHymn" class="form-control" />
                 <span asp-validation-for="SacramentHymn" class="text-danger"></span>
+            </div>
+            <div style="text-align: center;"><hr /><strong>Administration of the Sacrament</strong><hr /> </div>
+            <div class="form-group">
+                <label asp-for="Talks" class="control-label">Speakers</label>
+                <div>
+                    @if (ViewData["before"] != null)
+                    {
+                        foreach (Talk talk in ViewData["before"] as List<Talk>)
+                        {
+                            <div>
+                                <strong>Speaker:</strong> @talk.Member.FullName<br />
+                                <strong>Subject:</strong> <i>@talk.Subject</i>
+                                <div>
+                                   <!-- Edit Button -->
+                                    <!-- <button type="button" class="btn btn-primary" onclick="editTalk('@talk.Member.FullName', '@talk.Subject')">Edit</button> -->
+                        
+                                   <!-- Delete Button -->
+                                    <button type="button" class="btn btn-danger" onclick="deleteTalk('@Url.Action("DeleteTalk", "Meetings", new { id = Model.Id, talkId = talk.Id })')">Delete</button>
+
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="form-group">
+                    @if (ViewData["before"] != null)
+                    {
+                        @foreach (Talk talk in ViewData["after"] as List<Talk>)
+                        {
+                            <div>
+                                <strong>Speaker:</strong> @talk.Member.FullName<br />
+                                <strong>Subject:</strong> <i>@talk.Subject</i>
+                                <div>
+                                    <!-- Edit Button -->
+                                    <!-- <button type="button" class="btn btn-primary" onclick="editTalk('@talk.Member.FullName', '@talk.Subject')">Edit</button> -->
+
+                                    <!-- Delete Button -->
+                                    <button type="button" class="btn btn-danger" onclick="deleteTalk('@Url.Action("DeleteTalk", "Meetings", new { id = Model.Id, talkId = talk.Id })')">Delete</button>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Talks" class="control-label">Add a Talk</label>
+                <div id="talksContainer">
+                    @if (Model.Talks != null)
+                    {
+                        for (int i = 0; i < Model.Talks.Count; i++)
+                        {
+                            <div>
+                                <label for="Talks[@i].MemberId">Select Member for Talk @i:</label>
+                                <select asp-for="Talks[i].MemberId" class="form-control member-dropdown"></select>
+                                <input id="Talks[@i].Subject" name="Talks[@i].Subject" class="form-control" />
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="horizontal-button-group">
+                    <button type="button" onclick="addTalk()">Add Talk</button>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="IntermediateHymn" class="control-label"></label>
@@ -53,7 +117,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ClosingPrayer" class="control-label"></label>
-                <input asp-for="ClosingPrayer" class="form-control" />
+                <select asp-for="ClosingPrayer" asp-items="ViewBag.Members" class="form-control"></select>
                 <span asp-validation-for="ClosingPrayer" class="text-danger"></span>
             </div>
         </form>
@@ -64,6 +128,109 @@
     <a asp-action="Details" asp-route-id="@Model.Id">⮘ Back</a>
     <input type="submit" value="Save" form="edit-form" />
 </div>
+
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function editTalk(speaker, subject) {
+           
+        }
+
+        function deleteTalk(url) {
+            // Trigger a confirmation dialog
+            if (confirm('Are you sure you want to delete this talk?')) {
+                // Get the AntiForgeryToken value
+                var token = $('input[name="__RequestVerificationToken"]').val();
+
+                // Make an AJAX request to delete the talk on the server
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: { "__RequestVerificationToken": token }, // Include the AntiForgeryToken
+                    success: function (response) {
+                        // Handle success
+                        console.log(response.message);
+                        // Reload the page or update the UI as needed
+                        location.reload(); // Reload the page for simplicity
+                    },
+                    error: function (error) {
+                        // Handle error
+                        console.error('Error deleting talk:', error);
+                    }
+                });
+            }
+        }
+
+        //Used to hide the elements
+        document.getElementById("talksContainer").innerHTML = "";
+       
+        var memberIdCounter = 0;
+
+        function addTalk() {
+            var container = document.getElementById("talksContainer");
+
+            var talkDiv = document.createElement("div");
+            talkDiv.className = "talk-container";
+
+            var memberId = "Talks[" + memberIdCounter + "].MemberId";
+            var subjectId = "Talks[" + memberIdCounter + "].Subject";
+
+            // Dropdown for selecting members
+            var memberDropdown = document.createElement("select");
+            memberDropdown.name = memberId;
+            memberDropdown.className = "form-control member-dropdown";
+
+            // populating the dropdown with the Members
+            fetchMembers(memberDropdown);
+
+            // Getting the talk subject
+            var subjectInput = document.createElement("input");
+            subjectInput.name = subjectId;
+            subjectInput.type = "text";
+            subjectInput.className = "form-control";
+            subjectInput.placeholder = "Talk Subject";
+
+            // Button to remove the talk
+            var removeButton = document.createElement("button");
+            removeButton.type = "button";
+            removeButton.className = "solo-button";
+            removeButton.innerText = "Remove Talk";
+            removeButton.onclick = function () { container.removeChild(talkDiv); };
+
+            // Adding all the things to the talk container
+            talkDiv.appendChild(memberDropdown);
+            talkDiv.appendChild(subjectInput);
+            talkDiv.appendChild(removeButton);
+            container.appendChild(talkDiv);
+
+            memberIdCounter++;
+        }
+
+        async function fetchMembers(dropdown) {
+            try {
+                const response = await fetch('/Members/GetMembers'); 
+                const members = await response.json();
+
+                dropdown.innerHTML = "";
+
+                // Add a default option
+                const defaultOption = document.createElement("option");
+                defaultOption.text = "Select a member";
+                defaultOption.value = "";
+                dropdown.add(defaultOption);
+
+                // Add the members to the dropdown
+                members.forEach(member => {
+                    const option = document.createElement("option");
+                    option.text = `${member.firstName} ${member.lastName}`;
+                    option.value = member.id;
+                    dropdown.add(option);
+                });
+            } catch (error) {
+                console.error('Error fetching members:', error);
+            }
+        }
+    </script>
 }
