@@ -85,7 +85,7 @@ namespace SacramentPlanner.Controllers
             }
 
             // Put members in a dropdown so we can choose them to speak
-            ViewBag.Members = new SelectList(members, "Id", "FullName");
+            ViewBag.Members = new SelectList(members, "FullName", "FullName");
 
             return View(meeting);
         }
@@ -166,7 +166,7 @@ namespace SacramentPlanner.Controllers
 
             var members = _context.Member.ToList();
             // Put members in a dropdown so we can choose them to speak
-            ViewBag.Members = new SelectList(members, "Id", "FullName");
+            ViewBag.Members = new SelectList(members, "FullName", "FullName");
 
             //var meeting1 = await _context.Meeting.FindAsync(id);
             
