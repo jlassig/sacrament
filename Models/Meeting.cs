@@ -11,7 +11,7 @@ namespace SacramentPlanner.Models
 
         //Foreign key to link member to a talk to a meeting
         public int MemberId { get; set; }
-        public Member? Member { get; set; }
+        public Member? Member { get; set; } 
 
 
         // Foreign key to link Speaker to a Meeting
